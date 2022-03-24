@@ -10,10 +10,25 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+ cin:{type: String,
+    required: true
+  },
+  tel:{type: Number,
+    required: true
+  },
+  ville:{type: String,
+    required: true
+  },
+  
+  role: {
+    type: String,
+    required: true
+  },
   password: {
     type: String,
     required: true
   },
+
   verified: {
     type: Boolean,
     default: false
@@ -22,7 +37,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: ''
   }
-}, { timestamps: true });
+}, { timestamps: true }
+);
 
 const User = mongoose.model('User', UserSchema);
 

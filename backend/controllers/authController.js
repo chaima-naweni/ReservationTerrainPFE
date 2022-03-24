@@ -1,3 +1,4 @@
+
 const passport = require('passport');
 const bcryptjs = require('bcryptjs');
 const nodemailer = require('nodemailer');
@@ -12,11 +13,11 @@ const User = require('../models/User');
 
 //------------ Register Handle ------------//
 exports.registerHandle = (req, res) => {
-    const { name, email, password, password2 } = req.body;
+    const { name, email, cin,tel,ville,password ,password2,role} = req.body;
     let errors = [];
 
     //------------ Checking required fields ------------//
-    if (!name || !email || !password || !password2) {
+    if (!name || !email ||!cin||!tel||!ville|| !password || !password2 ||!role) {
         errors.push({ msg: 'Please enter all fields' });
     }
 
@@ -35,8 +36,11 @@ exports.registerHandle = (req, res) => {
             errors,
             name,
             email,
-            password,
-            password2
+            cin,
+            tel,
+            ville,
+           password,
+            role
         });
     } else {
         //------------ Validation passed ------------//
@@ -48,8 +52,11 @@ exports.registerHandle = (req, res) => {
                     errors,
                     name,
                     email,
-                    password,
-                    password2
+                    cin,
+                    tel,
+                   ville,
+                   password,
+                   role
                 });
             } else {
 
@@ -64,7 +71,7 @@ exports.registerHandle = (req, res) => {
                 });
                 const accessToken = oauth2Client.getAccessToken()
 
-                const token = jwt.sign({ name, email, password }, JWT_KEY, { expiresIn: '30m' });
+                const token = jwt.sign({ name, email, cin,tel,ville,password ,role}, JWT_KEY, { expiresIn: '30m' });
                 const CLIENT_URL = 'http://' + req.headers.host;
 
                 const output = `
@@ -132,7 +139,7 @@ exports.activateHandle = (req, res) => {
                 res.redirect('/auth/register');
             }
             else {
-                const { name, email, password } = decodedToken;
+                const { name, email, cin,tel,ville,password ,role} = decodedToken;
                 User.findOne({ email: email }).then(user => {
                     if (user) {
                         //------------ User already exists ------------//
@@ -145,7 +152,11 @@ exports.activateHandle = (req, res) => {
                         const newUser = new User({
                             name,
                             email,
-                            password
+                            cin,
+                            tel,
+                            ville,
+                            password,
+                            role
                         });
 
                         bcryptjs.genSalt(10, (err, salt) => {
