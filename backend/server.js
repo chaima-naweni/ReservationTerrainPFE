@@ -6,7 +6,11 @@ const session = require('express-session');
 const passport = require('passport');
 require("./config/key");
 const app = express();
+//app.use(urlencoded({ extended: false}));
+// ki zedet el bodyParser wallet elll post tetaada w fiha required:true
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 //------------ Passport Configuration ------------//
 require('./config/passport')(passport);
 
@@ -37,6 +41,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 //------------ Connecting flash ------------//
 app.use(flash());
 
@@ -50,7 +55,12 @@ app.use(function(req, res, next) {
 //------------ Routes ------------//
 app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));
-
+app.use('/terrain', require('./routes/terrain'));
+//get terrain avec ville
+app.use('/terrain/ville',require('./routes/ville'));
+//get terrain avec localisation
+app.use('/terrain/localisation',require('./routes/loc'));
 const PORT = process.env.PORT || 3004;
 
 app.listen(PORT, console.log(`Server running on PORT ${PORT}`));
+//tasna3 awellll API

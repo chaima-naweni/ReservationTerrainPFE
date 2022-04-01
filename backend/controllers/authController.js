@@ -96,7 +96,7 @@ exports.registerHandle = (req, res) => {
                 const mailOptions = {
                     from: '"Auth Admin" <nodejsa@gmail.com>', // sender address
                     to: email, // list of receivers
-                    subject: "Account Verification: NodeJS Auth ✔", // Subject line
+                    subject: "Account Verification:  Auth ✔", // Subject line
                     generateTextFromHTML: true,
                     html: output, // html body
                 };
@@ -259,7 +259,7 @@ exports.forgotPassword = (req, res) => {
                             to: email, // list of receivers
                             subject: "Account Password Reset: NodeJS Auth ✔", // Subject line
                             html: output, // html body
-                        };
+                        }; 
 
                         transporter.sendMail(mailOptions, (error, info) => {
                             if (error) {

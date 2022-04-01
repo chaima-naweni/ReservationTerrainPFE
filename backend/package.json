@@ -21,6 +21,8 @@
     "mongoose": "^6.2.8",
     "nodemailer": "^6.7.3",
     "passport": "^0.5.2",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "schema": "^0.2.1",
+    "urlencode": "^1.1.0"
   }
 }
