@@ -1,6 +1,9 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
+//const next = require('next')
 const mongoose = require('mongoose');
+//const nextApp = next({ dev })
+//const handle = nextApp.getRequestHandler() //part of next config
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
@@ -52,6 +55,12 @@ app.use(function(req, res, next) {
   res.locals.error = req.flash('error');
   next();
 });
+
+  
+  //app.use('/api/photos', require('./routes/index')) 
+  //app.get('*', (req,res) => {
+      //return handle(req,res) // for all the react stuff
+
 //------------ Routes ------------//
 app.use('/', require('./routes/index'));
 app.use('/auth', require('./routes/auth'));

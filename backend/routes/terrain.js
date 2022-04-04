@@ -3,7 +3,7 @@ const router = express.Router();
 const terrainController=require('../controllers/terrainsController')
 router.get('/', terrainController.all); 
 router.get('/:id', terrainController.get);
-router.post('/', terrainController.create);
+router.post('/new', terrainController.create);
 router.put('/:id', terrainController.update);
 router.delete('/:id', terrainController.delete);
 

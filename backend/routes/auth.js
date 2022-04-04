@@ -39,5 +39,9 @@ router.post('/login', authController.loginHandle);
 
 //------------ Logout GET Handle ------------//
 router.get('/logout', authController.logoutHandle);
+router.get('/', authController.all);
+router.get('/:id', authController.get);
+router.put('/:id', authController.update);
+router.delete('/:id', authController.delete);
 
 module.exports = router;
