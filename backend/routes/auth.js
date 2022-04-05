@@ -1,47 +1,17 @@
-const express = require('express');
-const router = express.Router();
+const express = require("express")
+const authController = require("../controllers/authController")
+const auth = require('./../midlleware/auth')
+const {check} = require('express-validator')
+const router = express.Router()
+router.post('/signup', [
+  check("name", "Name atleast should be 3 characters").isLength({min: 3}),
+  check("email", "Email should be valid").isEmail(),
+  check("password", "Password at least should be 8 characters").isLength({min: 8}),
+  //check("password","password mis match").custom((password != password2)),
+] ,authController.signup)
 
-//------------ Importing Controllers ------------//
-const authController = require('../controllers/authController')
+router.post('/signin', authController.login)
+router.get("/signout", authController.signout)
+module.exports = router
 
-//------------ Login Route ------------//
-router.get('/login', (req, res) => res.render('login'));
 
-//------------ Forgot Password Route ------------//
-router.get('/forgot', (req, res) => res.render('forgot'));
-
-//------------ Reset Password Route ------------//
-router.get('/reset/:id', (req, res) => {
-    // console.log(id)
-    res.render('reset', { id: req.params.id })
-});
-
-//------------ Register Route ------------//
-router.get('/register', (req, res) => res.render('register'));
-
-//------------ Register POST Handle ------------//
-router.post('/register', authController.registerHandle);
-
-//------------ Email ACTIVATE Handle ------------//
-router.get('/activate/:token', authController.activateHandle);
-
-//------------ Forgot Password Handle ------------//
-router.post('/forgot', authController.forgotPassword);
-
-//------------ Reset Password Handle ------------//
-router.post('/reset/:id', authController.resetPassword);
-
-//------------ Reset Password Handle ------------//
-router.get('/forgot/:token', authController.gotoReset);
-
-//------------ Login POST Handle ------------//
-router.post('/login', authController.loginHandle);
-
-//------------ Logout GET Handle ------------//
-router.get('/logout', authController.logoutHandle);
-router.get('/', authController.all);
-router.get('/:id', authController.get);
-router.put('/:id', authController.update);
-router.delete('/:id', authController.delete);
-
-module.exports = router;
