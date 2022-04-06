@@ -20,9 +20,18 @@ app.use(cors())
 
 // Import the routes
 const userRoutes = require("./routes/auth")
+const terrainRoutes =require("./routes/terrain")
+const  reservationRoutes=require("./routes/reservation")
+const locRoutes=require('./routes/loc')
+const villeRoutes=require('./routes/ville')
 
 // Using routes
 app.use('/api', userRoutes) 
+app.use('/terrain',terrainRoutes)
+app.use('/reservation',reservationRoutes)
+app.use('/terrain/Loc',locRoutes)
+app.use('/terrainParVille',villeRoutes)
+
 const port = process.env.PORT || 3004
 
 // Starting a server
