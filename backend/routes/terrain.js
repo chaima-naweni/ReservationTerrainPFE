@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const terrainController=require('../controllers/terrainsController')
-router.get('/', terrainController.all); 
-router.get('/:id', terrainController.get);
+router.get('/AllTerrain', terrainController.all); 
+router.get('OneTerrain/:id', terrainController.get);
 router.post('/new', terrainController.create);
-router.put('/:id', terrainController.update);
-router.delete('/:id', terrainController.delete);
+router.put('UpdateTerrain/:id', terrainController.update);
+router.delete('DeleteTerrain/:id', terrainController.delete);
 
 //router.get('/profile/:nameTerrain',terrainController.profile);
     

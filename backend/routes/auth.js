@@ -12,6 +12,10 @@ router.post('/signup', [
 
 router.post('/signin', authController.login)
 router.get("/signout", authController.signout)
+router.get('/allUser', authController.all);
+router.get('/getOneUser/:id', authController.get);
+router.put('/UpdateUser/:id', authController.update);
+router.delete('/deleteUser/:id', authController.delete);
 module.exports = router
 
 
