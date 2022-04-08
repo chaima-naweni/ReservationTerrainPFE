@@ -1,6 +1,9 @@
 
 const mongoose = require('mongoose');
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+const Joi = require("joi");
+const passwordComplexity = require("joi-password-complexity");
 //const uuidv1 = require("uuid/v1");
 const { v1: uuidv1 } = require('uuid');
 uuidv1();
@@ -27,16 +30,16 @@ const UserSchema = new mongoose.Schema({
   
   role: {
     type: String,
-    required: true
+    required: false
   },
   password: {
     type: String,
     required: true
   },
-  password2: {
-    type: String,
-    required: true
-  },
+
+  verified:
+   { type: Boolean,
+     default: false },
   resetLink: {
     type: String,
     default: ''
@@ -44,6 +47,27 @@ const UserSchema = new mongoose.Schema({
   salt: String,
 }, { timestamps: true }
 );
-const User = mongoose.model('User', UserSchema);
+UserSchema.methods.generateAuthToken = function () {
+	const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
+		expiresIn: "7d",
+	});
+	return token;
+};
 
-module.exports = User;
+
+const User = mongoose.model("User", UserSchema);
+
+const validate = (data) => {
+	const schema = Joi.object({
+		name: Joi.string().required().label("Name"),
+    cin: Joi.string().required().label("Cin"),
+    tel: Joi.number().required().label("tel"),
+    ville: Joi.string().required().label("Ville"),
+   //role: Joi.string().label("Role"),
+		email: Joi.string().email().required().label("Email"),
+		password: passwordComplexity().required().label("Password"),
+	});
+	return schema.validate(data);
+};
+
+module.exports = { User, validate };

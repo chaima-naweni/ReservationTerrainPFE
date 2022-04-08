@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 const express = require("express")
 const app = express()
-
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
@@ -19,19 +18,21 @@ app.use(cookieParser())
 app.use(cors())
 
 // Import the routes
-const userRoutes = require("./routes/auth")
+const userRoutes = require("./routes/users")
 const terrainRoutes =require("./routes/terrain")
 const  reservationRoutes=require("./routes/reservation")
 const locRoutes=require('./routes/loc')
 const villeRoutes=require('./routes/ville')
-
+const passwordResetRoutes = require("./routes/passwordReset");
+const authRoutes=require("./routes/auth")
 // Using routes
-app.use('/api', userRoutes) 
+app.use('/api/users', userRoutes) 
 app.use('/terrain',terrainRoutes)
 app.use('/reservation',reservationRoutes)
 app.use('/terrain/Loc',locRoutes)
 app.use('/terrainParVille',villeRoutes)
-
+app.use("/api/password-reset", passwordResetRoutes);
+app.use("/api/auth", authRoutes);
 const port = process.env.PORT || 3004
 
 // Starting a server
