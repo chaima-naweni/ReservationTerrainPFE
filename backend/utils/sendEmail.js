@@ -16,7 +16,7 @@ module.exports = async (email, subject, text) => {
 		await transporter.sendMail({
 			from: process.env.USER,
 			to: email,
-			subject: subject,
+			subject: "Activation Inscription Dans Application Reservation Terrain Football",
 			text: text,
 		});
 		console.log("email sent successfully");

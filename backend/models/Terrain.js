@@ -6,6 +6,7 @@ const terrainSchema = mongoose.Schema({
     image : {type:String, required:"true"},
     capaciteJoueur : {type:String, required:"true" },
     ville : {type:String, required:"true"},
+    images : {type:String, required:"true"},
     id_user: {type:String, required:"true"},
     }, { timestamps: true },
     

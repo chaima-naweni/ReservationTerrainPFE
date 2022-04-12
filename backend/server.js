@@ -25,14 +25,18 @@ const locRoutes=require('./routes/loc')
 const villeRoutes=require('./routes/ville')
 const passwordResetRoutes = require("./routes/passwordReset");
 const authRoutes=require("./routes/auth")
+const utilisateurRoutes=require("./routes/userss")
+const  competitionRoutes=require('./routes/competition')
 // Using routes
 app.use('/api/users', userRoutes) 
 app.use('/terrain',terrainRoutes)
 app.use('/reservation',reservationRoutes)
 app.use('/terrain/Loc',locRoutes)
 app.use('/terrainParVille',villeRoutes)
+app.use('/Users',utilisateurRoutes)
 app.use("/api/password-reset", passwordResetRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/competition",competitionRoutes)
 const port = process.env.PORT || 3004
 
 // Starting a server
