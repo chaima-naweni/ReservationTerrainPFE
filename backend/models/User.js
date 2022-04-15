@@ -7,7 +7,6 @@ const passwordComplexity = require("joi-password-complexity");
 //const uuidv1 = require("uuid/v1");
 const { v1: uuidv1 } = require('uuid');
 uuidv1();
-
 //------------ User Schema ------------//
 const UserSchema = new mongoose.Schema({
   name: {
@@ -63,7 +62,7 @@ const validate = (data) => {
     cin: Joi.string().required().label("Cin"),
     tel: Joi.number().required().label("tel"),
     ville: Joi.string().required().label("Ville"),
-   //role: Joi.string().label("Role"),
+    role: Joi.string().label("Role"),
 		email: Joi.string().email().required().label("Email"),
 		password: passwordComplexity().required().label("Password"),
 	});

@@ -27,6 +27,7 @@ const passwordResetRoutes = require("./routes/passwordReset");
 const authRoutes=require("./routes/auth")
 const utilisateurRoutes=require("./routes/userss")
 const  competitionRoutes=require('./routes/competition')
+const adminRoutes=require("./routes/admin")
 // Using routes
 app.use('/api/users', userRoutes) 
 app.use('/terrain',terrainRoutes)
@@ -37,6 +38,7 @@ app.use('/Users',utilisateurRoutes)
 app.use("/api/password-reset", passwordResetRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/competition",competitionRoutes)
+app.use("/admin",adminRoutes)
 const port = process.env.PORT || 3004
 
 // Starting a server

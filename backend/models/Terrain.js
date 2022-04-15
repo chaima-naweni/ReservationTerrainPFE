@@ -8,6 +8,7 @@ const terrainSchema = mongoose.Schema({
     ville : {type:String, required:"true"},
     images : {type:String, required:"true"},
     id_user: {type:String, required:"true"},
+    valide:{type:String,required:"true"},
     }, { timestamps: true },
     
     )
