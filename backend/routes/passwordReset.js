@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { User } = require("../models/User");
-const Token = require("../models/token");
+const UserToken = require("../models/UserToken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const Joi = require("joi");
@@ -23,9 +23,9 @@ router.post("/", async (req, res) => {
 				.status(409)
 				.send({ message: "User with given email does not exist!" });
 
-		let token = await Token.findOne({ userId: user._id });
+		let token = await UserToken.findOne({ userId: user._id });
 		if (!token) {
-			token = await new Token({
+			token = await new UserToken({
 				userId: user._id,
 				token: crypto.randomBytes(32).toString("hex"),
 			}).save();
@@ -48,7 +48,7 @@ router.get("/:id/:token", async (req, res) => {
 		const user = await User.findOne({ _id: req.params.id });
 		if (!user) return res.status(400).send({ message: "Invalid link" });
 
-		const token = await Token.findOne({
+		const token = await UserToken.findOne({
 			userId: user._id,
 			token: req.params.token,
 		});
@@ -73,7 +73,7 @@ router.post("/:id/:token", async (req, res) => {
 		const user = await User.findOne({ _id: req.params.id });
 		if (!user) return res.status(400).send({ message: "Invalid link" });
 
-		const token = await Token.findOne({
+		const token = await UserToken.findOne({
 			userId: user._id,
 			token: req.params.token,
 		});
@@ -85,7 +85,7 @@ router.post("/:id/:token", async (req, res) => {
 		const hashPassword = await bcrypt.hash(req.body.password, salt);
 
 		user.password = hashPassword;
-		await user.save();
+		await user.save(); 
 		await token.remove();
 
 		res.status(200).send({ message: "Password reset successfully" });

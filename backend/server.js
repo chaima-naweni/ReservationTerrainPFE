@@ -5,8 +5,9 @@ const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
 require("dotenv").config();
-
-// DB Connection
+const refreshTokenRoutes =require( "./routes/refreshToken.js");
+  
+// DB Connection 
 mongoose.connect('mongodb://localhost:27017/reservation',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -28,6 +29,7 @@ const authRoutes=require("./routes/auth")
 const utilisateurRoutes=require("./routes/userss")
 const  competitionRoutes=require('./routes/competition')
 const adminRoutes=require("./routes/admin")
+const curentUser=require("./routes/currentUser")
 // Using routes
 app.use('/api/users', userRoutes) 
 app.use('/terrain',terrainRoutes)
@@ -39,6 +41,7 @@ app.use("/api/password-reset", passwordResetRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/competition",competitionRoutes)
 app.use("/admin",adminRoutes)
+app.use("/api",curentUser)
 const port = process.env.PORT || 3004
 
 // Starting a server

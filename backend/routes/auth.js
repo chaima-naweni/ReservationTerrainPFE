@@ -1,49 +1,54 @@
 const router = require("express").Router();
 const { User } = require("../models/User");
-const Token = require("../models/token");
+const UserToken = require("../models/UserToken");
 const crypto = require("crypto");
 const jwt = require('jsonwebtoken');
 const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
-
+const generateTokens =require ("../utils/generateTokens.js");
+const {logInBodyValidation,} =require( "../utils/validationSchema.js");
 router.post("/", async (req, res) => {
-		User.findOne({ email: req.body.email })
-			.then(user => {
-			  if (!user) {
-				return res.status(401).json({ error: 'User not found !' });
-			  }
-			  bcrypt.compare(req.body.password, user.password)
-				.then(valid => {
-				  if (!valid) {
-					return res.status(401).json({ error: 'Wrong password !' });
-				  }
-				  res.status(200).json({
-					userId: user._id,
-					token: jwt.sign(
-					  { userId: user._id },
-					  'RANDOM_TOKEN_SECRET',
-					  { expiresIn: '24h' }
-					)
-				  });
-				})
-				.catch(error => res.status(500).json({ error }));
-			})
-			.catch(error => res.status(500).json({ error }));
-	  
-				
-
-		
-		
+		try {
+			const { error } = logInBodyValidation(req.body);
+			if (error)
+				return res
+					.status(400)
+					.json({ error: true, message: error.details[0].message });
 	
-});
-
-const validate = (data) => {
-	const schema = Joi.object({
-		email: Joi.string().email().required().label("Email"),
-		password: Joi.string().required().label("Password"),
+			const user = await User.findOne({ email: req.body.email });
+			if (!user)
+				return res
+					.status(401)
+					.json({ error: true, message: "Invalid email or password" });
+	
+			const verifiedPassword = await bcrypt.compare(
+				req.body.password,
+				user.password
+			);
+			if (!verifiedPassword)
+				return res
+					.status(401)
+					.json({ error: true, message: "Invalid email or password" });
+	
+			const { accessToken, refreshToken } = await generateTokens(user);
+	
+			res.status(200).json({
+				error: false,
+				accessToken,
+				refreshToken,
+				message: "Logged in sucessfully",
+			});
+		} catch (err) {
+			console.log(err);
+			res.status(500).json({ error: true, message: "Internal Server Error" });
+		}
 	});
-	return schema.validate(data);
-};
+	
+
+		
+		
+
+
 
 module.exports = router;

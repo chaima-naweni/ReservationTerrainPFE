@@ -1,15 +1,18 @@
 const router = require("express").Router();
-const { User, validate } = require("../models/User");
-const Token = require("../models/token");
+const { User } = require("../models/User");
+const UserToken = require("../models/UserToken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const bcrypt = require("bcrypt");
-
+const jwt = require("express-jwt");
+const {signUpBodyValidation} =require( "../utils/validationSchema.js");
 router.post("/", async (req, res) => {
 	try {
-		const { error } = validate(req.body);
+		const { error } = signUpBodyValidation(req.body);
 		if (error)
-			return res.status(400).send({ message: error.details[0].message });
+			return res
+				.status(400)
+				.json({ error: true, message: error.details[0].message });
 
 		let user = await User.findOne({ email: req.body.email });
 		if (user)
@@ -22,7 +25,7 @@ router.post("/", async (req, res) => {
 
 		user = await new User({ ...req.body, password: hashPassword }).save();
 
-		const token = await new Token({
+		const token = await new UserToken({
 			userId: user._id,
 			token: crypto.randomBytes(32).toString("hex"),
 		}).save();
@@ -43,7 +46,7 @@ router.get("/:id/verify/:token/", async (req, res) => {
 		const user = await User.findOne({ _id: req.params.id });
 		if (!user) return res.status(400).send({ message: "Invalid link" });
 
-		const token = await Token.findOne({
+		const token = await UserToken.findOne({
 			userId: user._id,
 			token: req.params.token,
 		});
@@ -57,9 +60,5 @@ router.get("/:id/verify/:token/", async (req, res) => {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 });
-
-
-
-
-
-module.exports = router;
+ 
+module.exports = router ;
